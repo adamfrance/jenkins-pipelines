@@ -143,23 +143,23 @@ Nous avons ajouté les ''installateurs Maven et Docker'' et avons coché la case
 
 ![](images/009.png)
 
-We use the value we entered in the ``ID`` field to Docker Login in the script file. Now, we define pipeline under _Jenkins Home Page -> New Item_ menu.
+Nous utilisons la valeur que nous avons entrée dans le champ ''ID'' pour Docker Login dans le fichier de script. Maintenant, nous définissons le pipeline sous _Jenkins Home Page -> New Item_ menu.
 
 ![](images/010.png)
 
-In this step, we select ``GitHub hook trigger for GITScm pooling`` options for automatic run of the pipeline by ``Github hook`` call.
+Dans cette étape, nous sélectionnons les options ''GitHub hook trigger for GITScm pooling'' pour l'exécution automatique du pipeline par l'appel du ''Github hook''.
 
 ![](images/011.png)
 
-Also in the Pipeline section, we select the ``Pipeline script from SCM`` as Definition, define the GitHub repository and the branch name, and specify the script location (_[Jenkins file](https://github.com/hakdogan/jenkins-pipeline/blob/master/Jenkinsfile)_).
+Toujours dans la section Pipeline, nous sélectionnons le ''Script de pipeline à partir du GDS'' comme Définition, définissons le référentiel GitHub et le nom de la branche, et spécifions l'emplacement du script (_[Jenkins file](https://github.com/hakdogan/jenkins-pipeline/blob/master/Jenkinsfile)_).
 
 ![](images/012.png)
 
-After that, when a push is done to the remote repository or when you manually trigger the pipeline by ``Build Now`` option, the steps described in Jenkins file will be executed.
+Après cela, lorsqu'un push est effectué vers le référentiel distant ou lorsque vous déclenchez manuellement le pipeline par l'option ''Construire maintenant'', les étapes décrites dans le fichier Jenkins seront exécutées.
 
 ![](images/013.png)
 
-## Review important points of the Jenkins file
+## Points importants sur le Jenkinsfile
 
 ```
 stage('Initialize'){
@@ -169,7 +169,7 @@ stage('Initialize'){
 }
 ```
 
-The ``Maven`` and ``Docker client`` tools we have defined in Jenkins under _Global Tool Configuration_ menu are added to the ``PATH environment variable`` for using these tools with ``sh command``.
+Les outils ``Maven`` et ``Docker client`` que nous avons définis dans Jenkins sous _Global menu Configuration_ outils sont ajoutés à la ``variable d'environnement PATH`` pour utiliser ces outils avec ``sh command``.
 
 ```
 stage('Push to Docker Registry'){
@@ -179,7 +179,7 @@ stage('Push to Docker Registry'){
 }
 ```
 
-``withCredentials`` provided by ``Jenkins Credentials Binding Plugin`` and bind credentials to variables. We passed **dockerHubAccount** value with ``credentialsId`` parameter. Remember that, dockerHubAccount value is Docker Hub credentials ID we have defined it under _Jenkins Home Page -> Credentials -> Global credentials (unrestricted) -> Add Credentials_ menu. In this way, we access to the username and password information of the account for login.
+``withCredentials`` fournis par ``Jenkins Credentials Binding Plugin`` et lier les informations d'identification aux variables. Nous avons transmis la valeur **dockerHubAccount** avec le parametre ``credentialsId``. N'oubliez pas que la valeur dockerHubAccount est l'ID d'informations d'identification Docker Hub, que nous avons défini sous _Jenkins Home Page -> Credentials -> Global credentials (unrestricted) -> Add Credentials_ menu. De cette façon, nous accédons aux informations de nom d'utilisateur et de mot de passe du compte pour la connexion.
 
 ## Sonarqube configuration
 
@@ -200,4 +200,4 @@ For ``Sonarqube`` we have made the following definitions in the ``pom.xml`` file
 </dependencies>
 ```
 
-In the docker compose file, we gave the name of the Sonarqube service which is ``sonarqube``, this is why in the ``pom.xml`` file, the sonar URL was defined as http://sonarqube:9000.
+Dans le fichier docker compose, nous avons donné le nom du service Sonarqube qui est``sonarqube``, c'est pourquoi dans le fichier ``pom.xml``, l'url Sonar est definie par http://sonarqube:9000.
