@@ -1,6 +1,6 @@
 # sonar-coverage-example-java
 
-Vous pouvez configurer la couverture de code avec[SonarQube](https://www.sonarqube.org/).
+Vous pouvez configurer la couverture de code avec [SonarQube](https://www.sonarqube.org/).
 
 Dans cet exemple, nous définissons certaines variables dans notre fichier `sonar-project.properties`. Ces variables seront utilisées par SonarQube pour générer des résultats de couverture de code et d'analyse de code.
 
