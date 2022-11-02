@@ -1,13 +1,13 @@
 # sonar-coverage-example-java
 
-You can set up code coverage with [SonarQube](https://www.sonarqube.org/).
+Vous pouvez configurer la couverture de code avec[SonarQube](https://www.sonarqube.org/).
 
-In this example, we set some variables in our `sonar-project.properties` file. These variables will be used by SonarQube to generate code coverage results and code analysis.
+Dans cet exemple, nous définissons certaines variables dans notre fichier `sonar-project.properties`. Ces variables seront utilisées par SonarQube pour générer des résultats de couverture de code et d'analyse de code.
 
-See [Screwdriver documentation for SonarQube configuration](https://docs.screwdriver.cd/user-guide/configuration/code-coverage#sonarqube) for more details.
+Voir [Screwdriver documentation for SonarQube configuration](https://docs.screwdriver.cd/user-guide/configuration/code-coverage#sonarqube) pour plus de details.
 
-## Related links
+## Autres liens :
 * [SonarQube properties](https://docs.sonarqube.org/display/SONAR/Analysis+Parameters)
-* [Javascript example](https://github.com/screwdriver-cd-test/sonar-coverage-example-javascript)
-* [Examples from the SonarQube website](https://github.com/SonarSource/sonar-scanning-examples)
+* [Exemple JS](https://github.com/screwdriver-cd-test/sonar-coverage-example-javascript)
+* [Exemples du site Sonarqube](https://github.com/SonarSource/sonar-scanning-examples)
 * [SonarQube docs](https://docs.sonarqube.org/display/SCAN)
