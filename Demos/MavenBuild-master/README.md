@@ -1,15 +1,15 @@
-HelloWorld Servlet example with corresponding Dockerfile
+HelloWorld Servlet avec son Dockerfile correspondant
 
-Use Maven Build first to create war file in Target folder.
+Utilisez d'abord Maven Build pour créer un fichier war dans le dossier Target.
 
 mvn clean package
 
-Artifact will be created in target folder.
+Artifact sera cree dans le dossier target.
 
 docker build -t mavenbuild .
 
-Once this is done u will be see image using docker image
+Une fois cela fait, vous verrez l'image en utilisant docker images
 
-Use below command to run the container
+Faites la commande suivante pour lancer le container
 
 docker run -d -p 8080:8080 --name dockercontainer mavenbuild
