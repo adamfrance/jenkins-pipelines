@@ -137,7 +137,7 @@ Le but est de communiquer entre le ''Docker Daemon'' et le ''Docker Client'' (_n
 
 ![](images/008.png)
 
-Nous avons ajouté les ''installateurs Maven et Docker'' et avons coché la case ''Installer automatiquement''. Ces outils sont installés par Jenkins lors de la première exécution de notre script. Nous donnons des noms ''myMaven'' et ''myDocker'' aux outils. Nous accéderons à ces outils avec ces noms dans le fichier de script.
+Nous avons ajouté les ''installateurs Maven et Docker'' et avons coché la case ''Installer automatiquement''. Ces outils sont installés par Jenkins lors de la première exécution de notre script ![Jenkinsfile](https://github.com/hakdogan/jenkins-pipeline/blob/master/Jenkinsfile). Nous donnons des noms ''myMaven'' et ''myDocker'' aux outils. Nous accéderons à ces outils avec ces noms dans le fichier de script.
 
 Étant donné que nous allons effectuer certaines opérations telles que ''checkout codebase'' et ''push an image to Docker Hub'', nous devons définir les ''Docker Hub Credentials''. Gardez à l'esprit que si nous utilisons un **référentiel privé**, nous devons définir ''Informations d'identification Github''. Ces définitions sont effectuées sous _Jenkins Page d'accueil -> Informations d'identification -> Informations d'identification globales (sans restriction) -> menu Ajouter Credentials_.
 
