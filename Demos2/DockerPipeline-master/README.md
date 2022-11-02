@@ -1,22 +1,23 @@
 !["Docker Pulls](https://img.shields.io/docker/pulls/hakdogan/jenkins-pipeline.svg)
 [![Analytics](https://ga-beacon.appspot.com/UA-110069051-1/jenkins-pipeline/readme)](https://github.com/igrigorik/ga-beacon)
 
-# A tutorial about Continuous Integration and Continuous Delivery by Dockerize Jenkins Pipeline
+# Un tutoriel sur l'integration continue et le deploiement continue en utilisant Docker dans un Pipeline Jenkins 
 
-This repository is a tutorial it tries to exemplify how to automatically manage the process of building, testing with the highest coverage, and deployment phases.
+Ce référentiel est un didacticiel qui tente d'illustrer comment gérer automatiquement le processus de création, de test avec la couverture la plus élevée et les phases de déploiement.
 
-Our goal is to ensure our pipeline works well after each code being pushed. The processes we want to auto-manage:
-* Code checkout
-* Run tests
-* Compile the code
-* Run Sonarqube analysis on the code
-* Create Docker image
-* Push the image to Docker Hub
-* Pull and run the image
+Notre objectif est de nous assurer que notre pipeline fonctionne bien après chaque envoi de code. 
+Les processus que nous voulons gérer automatiquement : 
+* Verifier le code 
+* Exécuter des tests 
+* Compiler le code 
+* Exécuter l'analyse Sonarqube sur le code 
+* Créer une image Docker 
+* Pousser l'image vers Docker Hub 
+* Extraire et exécuter l'image
 
-## First step, running up the services
+## Premiere etape, lancer les services
 
-Since one of the goals is to obtain the ``sonarqube`` report of our project, we should be able to access sonarqube from the jenkins service. ``Docker compose`` is a best choice to run services working together. We configure our application services in a yaml file as below.
+Puisque l'un des objectifs est d'obtenir le rapport ''sonarqube'' de notre projet, nous devrions pouvoir accéder à sonarqube depuis le service jenkins. ''Docker compose'' est le meilleur choix pour exécuter des services travaillant ensemble. Nous configurons nos services applicatifs dans un fichier yaml comme ci-dessous.
 
 ``docker-compose.yml``
 ```yml
@@ -39,13 +40,13 @@ services:
       - 50000:50000
     container_name: jenkins
     volumes:
-      - /tmp/jenkins:/var/jenkins_home #Remember that, the tmp directory is designed to be wiped on system reboot.
+      - /tmp/jenkins:/var/jenkins_home #N'oubliez pas que le répertoire tmp est conçu pour être effacé au redémarrage du système.
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - sonarqube
 ```
 
-Paths of docker files of the containers are specified at context attribute in the docker-compose file. Content of these files as follows.
+Les chemins d'accès des fichiers docker des conteneurs sont spécifiés dans l'attribut context dans le fichier docker-compose. Contenu de ces fichiers comme suit.
 
 ``sonarqube/Dockerfile``
 ```
@@ -57,8 +58,7 @@ FROM sonarqube:6.7-alpine
 FROM jenkins:2.60.3
 ```
 
-If we run the following command in the same directory as the ``docker-compose.yml`` file, the Sonarqube and Jenkins containers will up and run.
-
+Si nous exécutons la commande suivante dans le même répertoire que le fichier ''docker-compose.yml'', les conteneurs Sonarqube et Jenkins seront opérationnels.
 ```
 docker-compose -f docker-compose.yml up --build
 ```
@@ -72,19 +72,19 @@ f5bed5ba3266        pipeline_sonarqube   "./bin/run.sh"           About a minute
 ```
 
 ## GitHub configuration
-We’ll define a service on Github to call the ``Jenkins Github webhook`` because we want to trigger the pipeline. To do this go to _Settings -> Integrations & services._ The ``Jenkins Github plugin`` should be shown on the list of available services as below.
+Nous allons définir un service sur Github pour appeler le ''Jenkins Github webhook'' car nous voulons déclencher le pipeline. Pour ce faire, allez à _Settings -> Intégrations et services._ Le ''plugin Jenkins Github'' devrait être affiché dans la liste des services disponibles comme ci-dessous.
 
 ![](images/001.png)
 
-After this, we should add a new service by typing the URL of the dockerized Jenkins container along with the ``/github-webhook/`` path.
+Après cela, nous devrions ajouter un nouveau service en tapant l'URL du conteneur Jenkins dockerisé avec le chemin ''/github-webhook/''.
 
 ![](images/002.png)
 
-The next step is that create an ``SSH key`` for a Jenkins user and define it as ``Deploy keys`` on our GitHub repository.
+L'étape suivante consiste à créer une ''clé SSH'' pour un utilisateur Jenkins et à la définir comme ''Déployer des clés'' sur notre référentiel GitHub.
 
 ![](images/003.png)
 
-If everything goes well, the following connection request should return with a success.
+Si tout se passe bien, la demande de connexion suivante devrait revenir avec succès.
 ```
 ssh git@github.com
 PTY allocation request failed on channel 0
@@ -94,11 +94,11 @@ Connection to github.com closed.
 
 ## Jenkins configuration
 
-We have configured Jenkins in the docker compose file to run on port 8080 therefore if we visit http://localhost:8080 we will be greeted with a screen like this.
+Nous avons configuré Jenkins dans le fichier de composition docker pour fonctionner sur le port 8080, donc si nous visitons http://localhost:8080 nous serons accueillis avec un écran comme celui-ci.
 
 ![](images/004.png)
 
-We need the admin password to proceed to installation. It’s stored in the ``/var/jenkins_home/secrets/initialAdminPassword`` directory and also It’s written as output on the console when Jenkins starts.
+Nous avons besoin du mot de passe administrateur pour procéder à l'installation. Il est stocké dans le répertoire ''/var/jenkins_home/secrets/initialAdminPassword'' et est également écrit en sortie sur la console lorsque Jenkins démarre.
 
 ```
 jenkins      | *************************************************************
@@ -113,14 +113,14 @@ jenkins      |
 jenkins      | *************************************************************
 ```
 
-To access the password from the container.
+Pour accéder au mot de passe à partir du conteneur.
 
 ```
 docker exec -it jenkins sh
 / $ cat /var/jenkins_home/secrets/initialAdminPassword
 ```
 
-After entering the password, we will download recommended plugins and define an ``admin user``.
+Après avoir entré le mot de passe, nous téléchargerons les plugins recommandés et définirons un ''utilisateur administrateur''.
 
 ![](images/005.png)
 
@@ -128,18 +128,18 @@ After entering the password, we will download recommended plugins and define an 
 
 ![](images/007.png)
 
-After clicking **Save and Finish** and **Start using Jenkins** buttons, we should be seeing the Jenkins homepage. One of the seven goals listed above is that we must have the ability to build an image in the Jenkins being dockerized. Take a look at the volume definitions of the Jenkins service in the compose file.
+Après avoir cliqué sur les boutons **Enregistrer et terminer** et **Commencer à utiliser Jenkins**, nous devrions voir la page d'accueil Jenkins. L'un des sept objectifs énumérés ci-dessus est que nous devons avoir la capacité de construire une image dans le Jenkins en cours de dockerisation. Examinez les définitions de volume du service Jenkins dans le fichier de composition.
 ```
 - /var/run/docker.sock:/var/run/docker.sock
 ```
 
-The purpose is to communicate between the ``Docker Daemon`` and the ``Docker Client``(_we will install it on Jenkins_) over the socket. Like the docker client, we also need ``Maven`` to compile the application. For the installation of these tools, we need to perform the ``Maven`` and ``Docker Client`` configurations under _Manage Jenkins -> Global Tool Configuration_ menu.
+Le but est de communiquer entre le ''Docker Daemon'' et le ''Docker Client'' (_nous l'installerons sur Jenkins_) sur le socket. Comme le client docker, nous avons également besoin de ''Maven'' pour compiler l'application. Pour l'installation de ces outils, nous devons effectuer les configurations ''Maven'' et ''Docker Client'' sous _Manage menu Jenkins -> Global Tool Configuration_.
 
 ![](images/008.png)
 
-We have added the ``Maven and Docker installers`` and have checked the ``Install automatically`` checkbox. These tools are installed by Jenkins when our script([Jenkins file](https://github.com/hakdogan/jenkins-pipeline/blob/master/Jenkinsfile)) first runs. We give ``myMaven`` and ``myDocker`` names to the tools. We will access these tools with this names in the script file.
+Nous avons ajouté les ''installateurs Maven et Docker'' et avons coché la case ''Installer automatiquement''. Ces outils sont installés par Jenkins lors de la première exécution de notre script. Nous donnons des noms ''myMaven'' et ''myDocker'' aux outils. Nous accéderons à ces outils avec ces noms dans le fichier de script.
 
-Since we will perform some operations such as ``checkout codebase`` and ``pushing an image to Docker Hub``, we need to define the ``Docker Hub Credentials``. Keep in mind that if we are using a **private repo**, we must define ``Github credentials``. These definitions are performed under _Jenkins Home Page -> Credentials -> Global credentials (unrestricted) -> Add Credentials_ menu.
+Étant donné que nous allons effectuer certaines opérations telles que ''checkout codebase'' et ''push an image to Docker Hub'', nous devons définir les ''Docker Hub Credentials''. Gardez à l'esprit que si nous utilisons un **référentiel privé**, nous devons définir ''Informations d'identification Github''. Ces définitions sont effectuées sous _Jenkins Page d'accueil -> Informations d'identification -> Informations d'identification globales (sans restriction) -> menu Ajouter Credentials_.
 
 ![](images/009.png)
 
